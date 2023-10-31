@@ -86,7 +86,7 @@ if question := st.chat_input("What is up?"):
         message_placeholder = st.empty()
         full_response = ""
         qa = RetrievalQA.from_chain_type(llm=OpenAI(),chain_type="stuff", retriever=qa_retriever, return_source_documents=True, chain_type_kwargs={"prompt": PROMPT})
-        response = qa({"query": "What are leadership and management skills"})
+        response = qa({"query": question})
         full_response += response["result"]+"\n"
         limit = 5
         for i in range(min(limit,len(response["source_documents"]))):
