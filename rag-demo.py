@@ -14,7 +14,9 @@ os.environ["OPENAI_API_KEY"] = openai_api
 embeddings = OpenAIEmbeddings()
 MONGODB_ATLAS_CLUSTER_URI = st.secrets["MONGODB_ATLAS_CLUSTER_URI"]
 
-
+st.set_page_config(page_title="Amotions Demo",
+                   page_icon="https://www.amotionsinc.com/navbar-logo.svg")
+st.image("https://www.amotionsinc.com/navbar-logo.svg")
 st.title("Amotions RAG demo")
 
 if "openai_model" not in st.session_state:
@@ -84,9 +86,10 @@ if question := st.chat_input("What is up?"):
         message_placeholder = st.empty()
         full_response = ""
         qa = RetrievalQA.from_chain_type(llm=OpenAI(),chain_type="stuff", retriever=qa_retriever, return_source_documents=True, chain_type_kwargs={"prompt": PROMPT})
-        response = qa({"query": question})
+        response = qa({"query": "What are leadership and management skills"})
         full_response += response["result"]+"\n"
-        for i in range(len(response["source_documents"])):
+        limit = 5
+        for i in range(min(limit,len(response["source_documents"]))):
             full_response += "\n source: " + response["source_documents"][i].metadata["source"]+" \n"
             full_response += "\n page : " + str(response["source_documents"][i].metadata["page"])+" \n"
         message_placeholder.markdown(full_response + "▌")
