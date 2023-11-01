@@ -60,8 +60,8 @@ vector_search = MongoDBAtlasVectorSearch.from_connection_string(
 qa_retriever = vector_search.as_retriever(
     search_type="similarity",
     search_kwargs={
-        "k": 100,
-        "post_filter_pipeline": [{"$limit": 25}]
+        "k": 5,
+        "post_filter_pipeline": [{"$limit": 5}]
     }
 )
 
